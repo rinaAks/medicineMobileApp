@@ -33,6 +33,7 @@ import androidx.compose.ui.res.vectorResource
 import com.example.medicinesapp.screens.ArchiveScreen
 import com.example.medicinesapp.screens.MedEditScreen
 import com.example.medicinesapp.screens.MedsScreen
+import com.example.medicinesapp.screens.SettingsScreen
 
 data class BottomNavItem(
     val title: String,
@@ -95,7 +96,7 @@ fun Navigation() {
                                     navController.navigate("medsScreen")
                                 }
                                 if(item.title == "Настройки") {
-                                    navController.navigate("medsScreen")
+                                    navController.navigate("settScreen")
                                 }
 
                             },
@@ -126,6 +127,7 @@ fun Navigation() {
         composable("medsScreen") { MedsScreen(navController) }
         composable("medEditScreen") { MedEditScreen(navController) }
         composable("archiveScreen") { ArchiveScreen(navController) }
+        composable("settScreen") { SettingsScreen(navController) }
     }
 }
 

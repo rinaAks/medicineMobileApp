@@ -1,16 +1,25 @@
 package com.example.medicinesapp.screens
 
+import android.hardware.lights.Light
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -39,22 +48,41 @@ import com.example.medicinesapp.ui.theme.MedicinesAppTheme
 
 @Composable
 fun ArchiveScreen(navController: NavController) {
-    Column {
-        Row(){
-            Column(){
+    MedicinesAppTheme {
+        Column (
+        ){
+            Row(
+                modifier = Modifier.padding(start = 16.dp, top = 32.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Button(onClick = { navController.navigate("MedsScreen") }
+                    ) {
+                    Icon(
+                        imageVector = Icons.Filled.ArrowBack,
+                        contentDescription = null,
+                        tint = LightBeige,
+                        modifier = Modifier.size(SwitchDefaults.IconSize)
+                    )
+                }
+
                 Text(
                     text = "Архив",
                     fontSize = 45.sp,
-                    modifier = Modifier.padding(start = 24.dp, top = 32.dp),
+                    modifier = Modifier.padding(start = 24.dp),
                     color = LightBrown
                 )
+
             }
-        }
-        Row {
-            PillsListArchive(pillName = "Арбидол", "12.02.2025-26.02.2025", navController)
-        }
-        Row {
-            PillsListArchive(pillName = "Тотема (железо)", "05.09.2024-05.12.2024", navController)
+            Row {
+                PillsListArchive(pillName = "Арбидол", "12.02.2025-26.02.2025", navController)
+            }
+            Row {
+                PillsListArchive(
+                    pillName = "Тотема (железо)",
+                    "05.09.2024-05.12.2024",
+                    navController
+                )
+            }
         }
     }
 }

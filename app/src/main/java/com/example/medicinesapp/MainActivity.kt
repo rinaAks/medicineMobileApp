@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material3.AlertDialogDefaults.containerColor
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxColors
 import androidx.compose.material3.Icon
@@ -71,13 +72,13 @@ class MainActivity : ComponentActivity() {
                     ),
                     BottomNavItem(
                         title = "Таблетки",
-                        selectedIcon = ImageVector.vectorResource(R.drawable.tracker_selected),
-                        unselectedIcon = ImageVector.vectorResource(R.drawable.tracker_unselected)
+                        selectedIcon = ImageVector.vectorResource(R.drawable.meds_selected),
+                        unselectedIcon = ImageVector.vectorResource(R.drawable.meds_unselected)
                     ),
                     BottomNavItem(
                         title = "Настройки",
-                        selectedIcon = ImageVector.vectorResource(R.drawable.tracker_selected),
-                        unselectedIcon = ImageVector.vectorResource(R.drawable.tracker_unselected)
+                        selectedIcon = ImageVector.vectorResource(R.drawable.sett_selected),
+                        unselectedIcon = ImageVector.vectorResource(R.drawable.sett_unselected)
                     ),
 
                 )
@@ -86,7 +87,7 @@ class MainActivity : ComponentActivity() {
                 }
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = LightBeige
                 ) {
                     Navigation()
                     Scaffold(

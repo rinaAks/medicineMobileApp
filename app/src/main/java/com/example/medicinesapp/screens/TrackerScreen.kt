@@ -33,8 +33,8 @@ import com.example.medicinesapp.ui.theme.MedicinesAppTheme
 fun TrackerScreen(navController: NavController) {
     Column {
         CalendarWeek()
-        PillsListTracker(pillName = "Витаферр (железо)")
-        PillsListTracker(pillName = "Йодомарин")
+        PillsListTracker(pillName = "Витаферр (железо)", navController)
+        PillsListTracker(pillName = "Йодомарин", navController)
     }
 }
 
@@ -88,11 +88,11 @@ fun CalendarWeek(modifier: Modifier = Modifier){
 }
 
 @Composable
-fun PillsListTracker(pillName: String, modifier: Modifier = Modifier){
+fun PillsListTracker(pillName: String, navController: NavController, modifier: Modifier = Modifier){
     var checked by remember { mutableStateOf(true) }
 
 
-    TextButton(onClick = {  }) {
+    TextButton(onClick = { navController.navigate("MedEditScreen") }) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             //horizontalArrangement = Arrangement.Center,
@@ -134,7 +134,7 @@ fun PillsListTracker(pillName: String, modifier: Modifier = Modifier){
     }
 }
 
-
+/*
 @Preview(
     showBackground = true,
     showSystemUi = true)
@@ -147,4 +147,4 @@ fun SomeTextPreview() {
             PillsListTracker(pillName = "Йодомарин")
         }
     }
-}
+}*/

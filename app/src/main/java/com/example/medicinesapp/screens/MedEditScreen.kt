@@ -34,7 +34,6 @@ import com.example.medicinesapp.ui.theme.White
 @Composable
 fun MedEditScreen(navController: NavController) {
     EditComponents()
-    Navigation()
 }
 
 @Composable

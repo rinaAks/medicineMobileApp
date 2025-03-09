@@ -30,6 +30,8 @@ import com.example.medicinesapp.ui.theme.LightBeige
 
 import com.example.medicinesapp.screens.TrackerScreen
 import androidx.compose.ui.res.vectorResource
+import com.example.medicinesapp.screens.ArchiveScreen
+import com.example.medicinesapp.screens.MedEditScreen
 import com.example.medicinesapp.screens.MedsScreen
 
 data class BottomNavItem(
@@ -122,6 +124,8 @@ fun Navigation() {
     NavHost(navController, startDestination = "trackerScreen") {
         composable("trackerScreen") { TrackerScreen(navController) }
         composable("medsScreen") { MedsScreen(navController) }
+        composable("medEditScreen") { MedEditScreen(navController) }
+        composable("archiveScreen") { ArchiveScreen(navController) }
     }
 }
 

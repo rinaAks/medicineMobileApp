@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -56,20 +57,19 @@ fun MedsScreen(navController: NavController) {
             }
         }
         Row {
-            PillsListActive(pillName = "Витаферр (железо)", "2", "Во время еды")
+            PillsListActive(pillName = "Витаферр (железо)", "2", "Во время еды", navController)
         }
         Row {
-            PillsListActive(pillName = "Йодомарин", "3", "До еды")
+            PillsListActive(pillName = "Йодомарин", "3", "До еды", navController)
         }
     }
 }
 
 @Composable
-fun PillsListActive(pillName: String, timesDay: String, timeEating:String, modifier: Modifier = Modifier){
+fun PillsListActive(pillName: String, timesDay: String, timeEating:String, navController: NavController, modifier: Modifier = Modifier){
     var checked by remember { mutableStateOf(true) }
 
 
-    TextButton(onClick = {  }) {
         Box (
             modifier = Modifier
                 .fillMaxWidth()
@@ -103,7 +103,8 @@ fun PillsListActive(pillName: String, timesDay: String, timeEating:String, modif
                 )
 
             }
-            Box( // для кликабельности заменить на IconButton, но тогда будет круглым
+            IconButton( // чтобы квадратные были края, на Box, но тогда кнопка не работает
+                onClick = { navController.navigate("MedEditScreen") },
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .shadow(elevation = 5.dp)
@@ -115,10 +116,10 @@ fun PillsListActive(pillName: String, timesDay: String, timeEating:String, modif
                 )
             }
         }
-    }
+
 }
 
-
+/*
 @Preview(
     showBackground = true,
     showSystemUi = true)
@@ -144,12 +145,12 @@ fun SomeMedsPreview() {
                 }
             }
             Row {
-                PillsListActive(pillName = "Витаферр (железо)", "2", "Во время еды")
+                PillsListActive(pillName = "Витаферр (железо)", "2", "Во время еды", navController)
             }
             Row {
-                PillsListActive(pillName = "Йодомарин", "3", "До еды")
+                PillsListActive(pillName = "Йодомарин", "3", "До еды", navController)
             }
         }
 
     }
-}
+}*/

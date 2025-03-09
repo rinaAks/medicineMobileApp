@@ -3,18 +3,26 @@ package com.example.medicinesapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxColors
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,128 +36,101 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.medicinesapp.ui.theme.MedicinesAppTheme
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.medicinesapp.screens.PillsListTracker
 import com.example.medicinesapp.ui.theme.DarkBeige
 import com.example.medicinesapp.ui.theme.DarkBrown
 import com.example.medicinesapp.ui.theme.LightBeige
 
+import com.example.medicinesapp.screens.TrackerScreen
+import androidx.compose.ui.res.vectorResource
 
-
+data class BottomNavItem(
+    val title: String,
+    val selectedIcon: ImageVector,
+    val unselectedIcon: ImageVector
+)
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MedicinesAppTheme {
-                // A surface container using the 'background' color from the theme
+                val items = listOf(
+                    BottomNavItem(
+                        title = "Трекер",
+                        selectedIcon = ImageVector.vectorResource(R.drawable.tracker_selected),
+                        unselectedIcon = ImageVector.vectorResource(R.drawable.tracker_unselected)
+                    ),
+                    BottomNavItem(
+                        title = "Таблетки",
+                        selectedIcon = ImageVector.vectorResource(R.drawable.tracker_selected),
+                        unselectedIcon = ImageVector.vectorResource(R.drawable.tracker_unselected)
+                    ),
+                    BottomNavItem(
+                        title = "Настройки",
+                        selectedIcon = ImageVector.vectorResource(R.drawable.tracker_selected),
+                        unselectedIcon = ImageVector.vectorResource(R.drawable.tracker_unselected)
+                    ),
+
+                )
+                var selectedItemIndex by rememberSaveable{
+                    mutableStateOf(0)
+                }
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Column {
-                        PillsListTracker(pillName = "Витаферр (железо)")
-                        PillsListTracker(pillName = "Йодомарин")
-                        Main()
+                    Navigation()
+                    Scaffold(
+                        bottomBar = {
+                            NavigationBar{
+                                items.forEachIndexed{index, item ->
+                                    NavigationBarItem(
+                                        selected = selectedItemIndex == index,
+                                        onClick = {
+                                            selectedItemIndex = index
+                                            // navController.navigate(item.title)
+                                        },
+                                        label = {
+                                            Text(text = item.title)
+                                        },
+                                        icon = {
+                                            Icon(
+                                                imageVector = if(index == selectedItemIndex){
+                                                    item.selectedIcon
+                                                } else item.unselectedIcon,
+                                                contentDescription = item.title
+                                            )
+
+                                        }
+                                    )
+                                }
+                            }
+                        }
+                    ){innerPadding ->
+                        Box(modifier = Modifier.padding(innerPadding))
                     }
                 }
+                Navigation()
             }
         }
     }
 }
 
 @Composable
-fun Main() {
+fun Navigation() {
     val navController = rememberNavController()
-    Column(Modifier.padding(8.dp)) {
-        NavBar(navController = navController)
-        NavHost(navController, startDestination = NavRoutes.Home.route) {
-            composable(NavRoutes.Home.route) { Home() }
-            composable(NavRoutes.Contacts.route) { Contacts()  }
-            composable(NavRoutes.About.route) { About() }
-        }
+    NavHost(navController, startDestination = "trackerScreen") {
+        composable("trackerScreen") { TrackerScreen(navController) }
     }
-}
-@Composable
-fun NavBar(navController: NavController){
-    Row(
-        Modifier.fillMaxWidth().padding(bottom = 8.dp)){
-        Text("Home",
-            Modifier
-                .weight(0.33f)
-                .clickable { navController.navigate(NavRoutes.Home.route) }, fontSize = 22.sp, color= Color(0xFF6650a4))
-        Text("Contacts",
-            Modifier
-                .weight(0.33f)
-                .clickable { navController.navigate(NavRoutes.Contacts.route) }, fontSize = 22.sp, color= Color(0xFF6650a4))
-        Text("About",
-            Modifier
-                .weight(0.33f)
-                .clickable { navController.navigate(NavRoutes.About.route) }, fontSize = 22.sp, color= Color(0xFF6650a4))
-    }
-}
-
-@Composable
-fun Home(){
-    Text("Home Page", fontSize = 30.sp)
-}
-@Composable
-fun Contacts(){
-    Text("Contact Page", fontSize = 30.sp)
-}
-@Composable
-fun About(){
-    Text("About Page", fontSize = 30.sp)
-}
-
-sealed class NavRoutes(val route: String) {
-    object Home : NavRoutes("home")
-    object Contacts : NavRoutes("contact")
-    object About : NavRoutes("about")
-}
-
-@Composable
-fun PillsListTracker(pillName: String, modifier: Modifier = Modifier){
-    var checked by remember { mutableStateOf(true) }
-
-    Row (
-        verticalAlignment = Alignment.CenterVertically,
-        //horizontalArrangement = Arrangement.Center,
-        horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier.fillMaxWidth().padding(16.dp).background(DarkBeige,shape = RoundedCornerShape(10.dp))
-    ){
-        Text(
-            text = pillName,
-            fontSize = 16.sp,
-            modifier = Modifier.padding(start = 20.dp),
-            color = DarkBrown
-            // lineHeight = 116.sp,
-        )
-        Checkbox(
-            checked = checked,
-            onCheckedChange = { checked = it }
-                    /*
-            colors = CheckboxColors(
-                DarkBeige,
-                LightBeige,
-                DarkBeige,
-                LightBeige,
-                LightBeige,
-                LightBeige,
-                LightBeige,
-                DarkBeige,
-                LightBeige,
-                LightBeige,
-                LightBeige
-            )
-            */
-
-        )
-    }
-
 }
 
 @Preview(
@@ -158,10 +139,6 @@ fun PillsListTracker(pillName: String, modifier: Modifier = Modifier){
 @Composable
 fun SomeTextPreview() {
     MedicinesAppTheme {
-        Column {
-            PillsListTracker(pillName = "Витаферр (железо)")
-            PillsListTracker(pillName = "Йодомарин")
-            Main()
-        }
+        Navigation()
     }
 }

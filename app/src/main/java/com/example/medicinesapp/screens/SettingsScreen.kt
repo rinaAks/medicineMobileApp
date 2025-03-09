@@ -134,12 +134,13 @@ fun SwitchWithIcon() {
         onCheckedChange = {
             checked = it
         },
+        colors = SwitchDefaults.colors(checkedTrackColor = LightBrown, uncheckedTrackColor = LightBeige, uncheckedBorderColor = LightBrown),
         thumbContent = if (checked) {
             {
                 Icon(
                     imageVector = Icons.Filled.Check,
                     contentDescription = null,
-                    modifier = Modifier.size(SwitchDefaults.IconSize),
+                    modifier = Modifier.size(SwitchDefaults.IconSize)
                 )
             }
         } else {

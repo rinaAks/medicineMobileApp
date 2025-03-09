@@ -12,7 +12,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,17 +23,14 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.medicinesapp.ui.theme.DarkBeige
-import com.example.medicinesapp.ui.theme.DarkBrown
-
 import androidx.navigation.NavController
 import com.example.medicinesapp.R
+import com.example.medicinesapp.ui.theme.DarkBeige
+import com.example.medicinesapp.ui.theme.DarkBrown
 import com.example.medicinesapp.ui.theme.LightBeige
 import com.example.medicinesapp.ui.theme.LightBrown
-import com.example.medicinesapp.ui.theme.MedicinesAppTheme
 
 @Composable
 fun MedsScreen(navController: NavController) {

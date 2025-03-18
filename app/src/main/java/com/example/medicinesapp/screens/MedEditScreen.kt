@@ -11,9 +11,12 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -23,18 +26,26 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.medicinesapp.Med
+import com.example.medicinesapp.MedEditScreenViewModel
 import com.example.medicinesapp.ui.theme.LightBeige
 import com.example.medicinesapp.ui.theme.LightBrown
 import com.example.medicinesapp.ui.theme.MedicinesAppTheme
 import com.example.medicinesapp.ui.theme.White
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
+import com.example.medicinesapp.ui.theme.DarkBeige
+import com.example.medicinesapp.ui.theme.DarkBrown
+
+private val medEditScreenViewModel = MedEditScreenViewModel()
 
 @Composable
 fun MedEditScreen(navController: NavController) {
-    EditComponents()
+    val med = medEditScreenViewModel.fetchMed()
+    EditComponents(med)
 }
 
 @Composable
-fun EditComponents(){
+fun EditComponents(med : Med){
     MedicinesAppTheme {
         Column(
             modifier = Modifier.padding(start = 16.dp, top = 32.dp)
@@ -65,7 +76,7 @@ fun EditComponents(){
                     OutlinedTextField(
                         value = text,
                         onValueChange = { text = it },
-                        label = { Text("Йодомарин") },
+                        label = { Text(med.name) },
                         colors = OutlinedTextFieldDefaults.colors(focusedTextColor = LightBrown),
                         modifier = Modifier.width(150.dp).padding(start = 20.dp).background(color = LightBeige),
                     )
@@ -88,7 +99,7 @@ fun EditComponents(){
                     OutlinedTextField(
                         value = text,
                         onValueChange = { text = it },
-                        label = { Text("таблетки") },
+                        label = { Text(med.type) },
                         colors = OutlinedTextFieldDefaults.colors(focusedTextColor = LightBrown),
                         modifier = Modifier.width(150.dp).padding(start = 20.dp)
                             .background(color = LightBeige),
@@ -112,7 +123,7 @@ fun EditComponents(){
                     OutlinedTextField(
                         value = text,
                         onValueChange = { text = it },
-                        label = { Text("3") },
+                        label = { Text(med.dailyIntake.toString()) },
                         colors = OutlinedTextFieldDefaults.colors(focusedTextColor = LightBrown),
                         modifier = Modifier.width(70.dp).padding(start = 20.dp)
                             .background(color = LightBeige),
@@ -141,7 +152,7 @@ fun EditComponents(){
                     OutlinedTextField(
                         value = text,
                         onValueChange = { text = it },
-                        label = { Text("3") },
+                        label = { Text(med.duration.toString()) },
                         colors = OutlinedTextFieldDefaults.colors(focusedTextColor = LightBrown),
                         modifier = Modifier.width(70.dp).padding(start = 20.dp)
                             .background(color = LightBeige),
@@ -167,7 +178,7 @@ fun EditComponents(){
                     OutlinedTextField(
                         value = text,
                         onValueChange = { text = it },
-                        label = { Text("1") },
+                        label = { Text(med.dose.toString()) },
                         colors = OutlinedTextFieldDefaults.colors(focusedTextColor = LightBrown),
                         modifier = Modifier.width(70.dp).padding(start = 20.dp)
                             .background(color = LightBeige),
@@ -179,11 +190,21 @@ fun EditComponents(){
                     OutlinedTextField(
                         value = text,
                         onValueChange = { text = it },
-                        label = { Text("таблетка") },
+                        label = { Text(med.doseUnit) },
                         colors = OutlinedTextFieldDefaults.colors(focusedTextColor = LightBrown),
                         modifier = Modifier.width(150.dp).padding(start = 20.dp)
                             .background(color = LightBeige),
                     )
+                }
+            }
+
+            Row(
+                modifier = Modifier.padding(bottom = 32.dp).fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Column {
+                    SingleChoiceSegmentedButton()
                 }
             }
 
@@ -204,7 +225,7 @@ fun EditComponents(){
                     OutlinedTextField(
                         value = text,
                         onValueChange = { text = it },
-                        label = { Text("") },
+                        label = { Text(med.notes) },
                         colors = OutlinedTextFieldDefaults.colors(focusedTextColor = LightBrown),
                         modifier = Modifier.width(70.dp).padding(start = 20.dp)
                             .background(color = LightBeige),
@@ -238,12 +259,37 @@ fun EditComponents(){
 
 }
 
+@Composable
+fun SingleChoiceSegmentedButton(modifier: Modifier = Modifier) {
+    var selectedIndex by remember { mutableIntStateOf(0) }
+    val options = listOf("До ", "Во время", "После")
 
+    SingleChoiceSegmentedButtonRow {
+        options.forEachIndexed { index, label ->
+            SegmentedButton(
+                colors = SegmentedButtonDefaults.colors(
+                    activeContainerColor = DarkBeige,
+                    activeContentColor = DarkBrown,
+                    activeBorderColor = LightBrown,
+                    inactiveContainerColor = LightBeige,
+                    inactiveContentColor = DarkBrown
+                ),
+                shape = SegmentedButtonDefaults.itemShape(
+                    index = index,
+                    count = options.size
+                ),
+                onClick = { selectedIndex = index },
+                selected = index == selectedIndex,
+                label = { Text(label) }
+            )
+        }
+    }
+}
 
 @Preview(
     showBackground = true,
     showSystemUi = true)
 @Composable
-fun ditMedsPreview() {
-    EditComponents()
+fun editMedsPreview() {
+    SingleChoiceSegmentedButton()
 }

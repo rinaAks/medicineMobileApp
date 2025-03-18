@@ -33,4 +33,8 @@ class MedRepository {
             notes = "растворять в воде"
         )
     )
+
+    fun loadMed() : Med{
+        return meds.random()
+    }
 }

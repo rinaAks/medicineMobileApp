@@ -58,6 +58,9 @@ dependencies {
     // Jetpack Compose integration
     implementation("androidx.navigation:navigation-compose:$nav_version")
 
+    // material UI
+    implementation("androidx.compose.material3:material3:1.3.1")
+
     // Views/Fragments integration
     implementation("androidx.navigation:navigation-fragment:$nav_version")
     implementation("androidx.navigation:navigation-ui:$nav_version")
@@ -86,4 +89,5 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
 }

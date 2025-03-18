@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -71,15 +72,7 @@ fun EditComponents(med : Med){
                     )
                 }
                 Column {
-                    var text by remember { mutableStateOf("") }
-
-                    OutlinedTextField(
-                        value = text,
-                        onValueChange = { text = it },
-                        label = { Text(med.name) },
-                        colors = OutlinedTextFieldDefaults.colors(focusedTextColor = LightBrown),
-                        modifier = Modifier.width(150.dp).padding(start = 20.dp).background(color = LightBeige),
-                    )
+                    PlaceTextField(modifier = Modifier, labelText = med.name)
                 }
             }
             Row(
@@ -94,16 +87,7 @@ fun EditComponents(med : Med){
                     )
                 }
                 Column {
-                    var text by remember { mutableStateOf("") }
-
-                    OutlinedTextField(
-                        value = text,
-                        onValueChange = { text = it },
-                        label = { Text(med.type) },
-                        colors = OutlinedTextFieldDefaults.colors(focusedTextColor = LightBrown),
-                        modifier = Modifier.width(150.dp).padding(start = 20.dp)
-                            .background(color = LightBeige),
-                    )
+                    PlaceTextField(modifier = Modifier, labelText = med.type)
                 }
             }
             Row(
@@ -118,16 +102,7 @@ fun EditComponents(med : Med){
                     )
                 }
                 Column {
-                    var text by remember { mutableStateOf("") }
-
-                    OutlinedTextField(
-                        value = text,
-                        onValueChange = { text = it },
-                        label = { Text(med.dailyIntake.toString()) },
-                        colors = OutlinedTextFieldDefaults.colors(focusedTextColor = LightBrown),
-                        modifier = Modifier.width(70.dp).padding(start = 20.dp)
-                            .background(color = LightBeige),
-                    )
+                    PlaceTextField(modifier = Modifier, labelText = med.dailyIntake.toString())
                 }
             }
 
@@ -147,16 +122,7 @@ fun EditComponents(med : Med){
                     )
                 }
                 Column {
-                    var text by remember { mutableStateOf("") }
-
-                    OutlinedTextField(
-                        value = text,
-                        onValueChange = { text = it },
-                        label = { Text(med.duration.toString()) },
-                        colors = OutlinedTextFieldDefaults.colors(focusedTextColor = LightBrown),
-                        modifier = Modifier.width(70.dp).padding(start = 20.dp)
-                            .background(color = LightBeige),
-                    )
+                    PlaceTextField(modifier = Modifier, labelText = med.duration.toString())
                 }
             }
 
@@ -169,32 +135,13 @@ fun EditComponents(med : Med){
                         text = "Доза",
                         fontSize = 28.sp,
                         color = LightBrown,
-
                         )
                 }
                 Column {
-                    var text by remember { mutableStateOf("") }
-
-                    OutlinedTextField(
-                        value = text,
-                        onValueChange = { text = it },
-                        label = { Text(med.dose.toString()) },
-                        colors = OutlinedTextFieldDefaults.colors(focusedTextColor = LightBrown),
-                        modifier = Modifier.width(70.dp).padding(start = 20.dp)
-                            .background(color = LightBeige),
-                    )
+                    PlaceTextField(modifier = Modifier, labelText = med.dose.toString())
                 }
                 Column {
-                    var text by remember { mutableStateOf("") }
-
-                    OutlinedTextField(
-                        value = text,
-                        onValueChange = { text = it },
-                        label = { Text(med.doseUnit) },
-                        colors = OutlinedTextFieldDefaults.colors(focusedTextColor = LightBrown),
-                        modifier = Modifier.width(150.dp).padding(start = 20.dp)
-                            .background(color = LightBeige),
-                    )
+                    PlaceTextField(modifier = Modifier, labelText = med.doseUnit)
                 }
             }
 
@@ -220,16 +167,7 @@ fun EditComponents(med : Med){
                     )
                 }
                 Column {
-                    var text by remember { mutableStateOf("") }
-
-                    OutlinedTextField(
-                        value = text,
-                        onValueChange = { text = it },
-                        label = { Text(med.notes) },
-                        colors = OutlinedTextFieldDefaults.colors(focusedTextColor = LightBrown),
-                        modifier = Modifier.width(70.dp).padding(start = 20.dp)
-                            .background(color = LightBeige),
-                    )
+                    PlaceTextField(modifier = Modifier, labelText = med.notes)
                 }
             }
 
@@ -257,6 +195,25 @@ fun EditComponents(med : Med){
 
     }
 
+}
+
+@Composable
+fun PlaceTextField(modifier: Modifier, labelText: String){
+    var text by remember { mutableStateOf("") }
+
+    OutlinedTextField(
+        value = text,
+        onValueChange = { text = it },
+        label = { Text(labelText) },
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedTextColor = LightBrown,
+            unfocusedTextColor = LightBrown,
+            disabledTextColor = LightBrown
+        ),
+        modifier = Modifier.widthIn(min = 50.dp, max = 250.dp).padding(start = 20.dp, end = 20.dp)
+            .background(color = LightBeige),
+        singleLine = true
+    )
 }
 
 @Composable

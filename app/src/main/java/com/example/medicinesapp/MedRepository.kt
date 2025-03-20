@@ -1,7 +1,7 @@
 package com.example.medicinesapp
 
 class MedRepository {
-    private val meds = listOf(
+    private var meds = listOf(
         Med(
             name = "Йодомарин",
             type = "таблетки",
@@ -41,5 +41,9 @@ class MedRepository {
         }
         */
         return meds.random()
+    }
+
+    fun addMed(med:Med){
+        meds += med
     }
 }

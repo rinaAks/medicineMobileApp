@@ -52,11 +52,20 @@ fun MedEditScreen(navController: NavController) {
 
     when(medEditScreenViewModel.uiState){
         is MedScreenState.Loading -> Loading()
-        is MedScreenState.Success -> EditComponents(med = (medEditScreenViewModel.uiState as MedScreenState.Success).currentMed)
+        is MedScreenState.Success -> EditComponents(med = (medEditScreenViewModel.uiState
+                as MedScreenState.Success).currentMed)
         // is MedScreenState.Error -> Error()
     }
     //EditComponents(med)
 }
+
+/*
+ПРОБЛЕМЫ
+1. Бесконечная загрузка
+2. addMed() пока не стоит использовать, из-за беск. загрузки там куча экземпляров создастся
+3. а как вообще передать значения из textField? Мб из PlaceTextField возвращать новое значение?
+ */
+
 
 @Composable
 fun Loading(){
@@ -81,6 +90,7 @@ fun Error(){
 @Composable
 fun EditComponents(med : Med){
     MedicinesAppTheme {
+        var newMed:Med
         val scrollState = rememberScrollState()
         Column(
             modifier = Modifier.padding(start = 16.dp, top = 32.dp).verticalScroll(scrollState).fillMaxSize()
@@ -220,7 +230,20 @@ fun EditComponents(med : Med){
                     }
                 }
                 Column {
-                    OutlinedButton(onClick = {  }, colors = ButtonDefaults.buttonColors(containerColor = LightBrown, contentColor = LightBrown)) {
+                    OutlinedButton(onClick = {
+                        newMed = Med(
+                            name = "Аскорбинка",
+                            type = "порошок",
+                            dailyIntake = 1,
+                            duration = 14,
+                            dose = 0.5,
+                            doseUnit = "пачка",
+                            intakeTiming = 1,
+                            notes = "растворять в воде"
+                        );
+                        medEditScreenViewModel.addMed(newMed)
+                                             },
+                        colors = ButtonDefaults.buttonColors(containerColor = LightBrown, contentColor = LightBrown)) {
                         Text("Сохранить", color = LightBeige)
                     }
                 }

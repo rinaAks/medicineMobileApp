@@ -2,13 +2,19 @@ package com.example.medicinesapp.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -34,6 +40,7 @@ import com.example.medicinesapp.ui.theme.LightBrown
 import com.example.medicinesapp.ui.theme.MedicinesAppTheme
 import com.example.medicinesapp.ui.theme.White
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
+import com.example.medicinesapp.MedScreenState
 import com.example.medicinesapp.ui.theme.DarkBeige
 import com.example.medicinesapp.ui.theme.DarkBrown
 
@@ -42,14 +49,41 @@ private val medEditScreenViewModel = MedEditScreenViewModel()
 @Composable
 fun MedEditScreen(navController: NavController) {
     val med = medEditScreenViewModel.fetchMed()
-    EditComponents(med)
+
+    when(medEditScreenViewModel.uiState){
+        is MedScreenState.Loading -> Loading()
+        is MedScreenState.Success -> EditComponents(med = (medEditScreenViewModel.uiState as MedScreenState.Success).currentMed)
+        // is MedScreenState.Error -> Error()
+    }
+    //EditComponents(med)
 }
 
 @Composable
+fun Loading(){
+    Box(contentAlignment = Alignment.Center){
+        CircularProgressIndicator(
+            modifier = Modifier.width(64.dp),
+            color = DarkBeige,
+            trackColor = LightBrown
+        )
+    }
+}
+/*
+@Composable
+fun Error(){
+    Box(contentAlignment = Alignment.Center){
+        Text(
+            text = "Ошибка, нет данных"
+        )
+    }
+}
+*/
+@Composable
 fun EditComponents(med : Med){
     MedicinesAppTheme {
+        val scrollState = rememberScrollState()
         Column(
-            modifier = Modifier.padding(start = 16.dp, top = 32.dp)
+            modifier = Modifier.padding(start = 16.dp, top = 32.dp).verticalScroll(scrollState).fillMaxSize()
         ){
             Row(
                 modifier = Modifier.padding(bottom = 16.dp)

@@ -35,6 +35,11 @@ class MedRepository {
     )
 
     fun loadMed() : Med{
+        /*
+        if (meds.isEmpty()){
+            return null
+        }
+        */
         return meds.random()
     }
 }

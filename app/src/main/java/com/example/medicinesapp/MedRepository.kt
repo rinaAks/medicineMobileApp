@@ -1,5 +1,7 @@
 package com.example.medicinesapp
 
+import kotlinx.coroutines.delay
+
 class MedRepository {
     private var meds = listOf(
         Med(
@@ -34,16 +36,28 @@ class MedRepository {
         )
     )
 
-    fun loadMed() : Med{
+    suspend fun loadMed() : Med{
         /*
         if (meds.isEmpty()){
             return null
         }
         */
+        delay(1000)
         return meds.random()
     }
 
     fun addMed(med:Med){
         meds += med
+    }
+
+    fun changeMed(med: Med, newMed: Med){
+        med.name = newMed.name
+        med.type = newMed.type
+        med.dailyIntake = newMed.dailyIntake
+        med.duration = newMed.duration
+        med.dose = newMed.dose
+        med.doseUnit = newMed.doseUnit
+        med.intakeTiming = newMed.intakeTiming
+        med.notes = newMed.notes
     }
 }

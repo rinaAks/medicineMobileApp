@@ -14,12 +14,12 @@ import androidx.annotation.StringRes
  */
 
 data class Med(
-    val name: String,      // Название препарата
-    val type: String,      // Вид
-    val dailyIntake: Int,  // Кол-во приёмов в день
-    val duration: Int,     // Продолжительность приёма
-    val dose: Double,      // Доза
-    val doseUnit: String,  // Мера дозы
-    val intakeTiming: Int, // 0 - До, 1 - Во время, 2 - После
-    val notes: String      // Примечания
+    var name: String,      // Название препарата
+    var type: String,      // Вид
+    var dailyIntake: Int,  // Кол-во приёмов в день
+    var duration: Int,     // Продолжительность приёма
+    var dose: Double,      // Доза
+    var doseUnit: String,  // Мера дозы
+    var intakeTiming: Int, // 0 - До, 1 - Во время, 2 - После
+    var notes: String      // Примечания
 )

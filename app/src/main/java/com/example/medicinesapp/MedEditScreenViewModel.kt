@@ -6,7 +6,9 @@ import androidx.compose.runtime.setValue
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MedEditScreenViewModel:ViewModel() {
     var uiState by mutableStateOf<MedScreenState>(MedScreenState.Loading)
@@ -22,8 +24,12 @@ class MedEditScreenViewModel:ViewModel() {
 
         // проблема с бесконечным обновлением
         uiState = MedScreenState.Loading
-        val med = medRepository.loadMed()
-        uiState = MedScreenState.Success(med)
+        viewModelScope.launch {
+            val med = medRepository.loadMed()
+            withContext (Dispatchers.Default) {
+                uiState = MedScreenState.Success(med)
+            }
+        }
 
         /*
         if (med == null){
@@ -37,6 +43,10 @@ class MedEditScreenViewModel:ViewModel() {
 
     fun addMed(med:Med) {
         medRepository.addMed(med)
+    }
+
+    fun changeMed(med:Med, newMed:Med) {
+        medRepository.changeMed(med, newMed)
     }
 }
 

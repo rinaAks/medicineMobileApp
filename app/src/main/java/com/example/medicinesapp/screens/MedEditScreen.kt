@@ -40,6 +40,7 @@ import com.example.medicinesapp.ui.theme.LightBrown
 import com.example.medicinesapp.ui.theme.MedicinesAppTheme
 import com.example.medicinesapp.ui.theme.White
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
+import androidx.compose.runtime.LaunchedEffect
 import com.example.medicinesapp.MedScreenState
 import com.example.medicinesapp.ui.theme.DarkBeige
 import com.example.medicinesapp.ui.theme.DarkBrown
@@ -48,24 +49,18 @@ private val medEditScreenViewModel = MedEditScreenViewModel()
 
 @Composable
 fun MedEditScreen(navController: NavController) {
-    val med = medEditScreenViewModel.fetchMed()
+    LaunchedEffect(Unit) { // без этого каждый раз экран был на загрузке
+        medEditScreenViewModel.fetchMed()
+    }
 
     when(medEditScreenViewModel.uiState){
-        is MedScreenState.Loading -> Loading()
+        is MedScreenState.Loading -> Loading() // всегда тут крутится
         is MedScreenState.Success -> EditComponents(med = (medEditScreenViewModel.uiState
-                as MedScreenState.Success).currentMed)
+                as MedScreenState.Success).currentMed, navController)
         // is MedScreenState.Error -> Error()
     }
     //EditComponents(med)
 }
-
-/*
-ПРОБЛЕМЫ
-1. Бесконечная загрузка
-2. addMed() пока не стоит использовать, из-за беск. загрузки там куча экземпляров создастся
-3. а как вообще передать значения из textField? Мб из PlaceTextField возвращать новое значение?
- */
-
 
 @Composable
 fun Loading(){
@@ -88,9 +83,15 @@ fun Error(){
 }
 */
 @Composable
-fun EditComponents(med : Med){
+fun EditComponents(med : Med, navController: NavController){
     MedicinesAppTheme {
         var newMed:Med
+        var newMed_name:String = med.name
+        var newMed_type:String = med.type
+        var newMed_doseUnit:String = med.doseUnit
+        var newMed_notes:String = med.notes
+        //newMed = med
+
         val scrollState = rememberScrollState()
         Column(
             modifier = Modifier.padding(start = 16.dp, top = 32.dp).verticalScroll(scrollState).fillMaxSize()
@@ -116,7 +117,7 @@ fun EditComponents(med : Med){
                     )
                 }
                 Column {
-                    PlaceTextField(modifier = Modifier, labelText = med.name)
+                    newMed_name = PlaceTextField(modifier = Modifier, labelText = med.name)
                 }
             }
             Row(
@@ -131,7 +132,7 @@ fun EditComponents(med : Med){
                     )
                 }
                 Column {
-                    PlaceTextField(modifier = Modifier, labelText = med.type)
+                    newMed_type = PlaceTextField(modifier = Modifier, labelText = med.type)
                 }
             }
             Row(
@@ -185,7 +186,7 @@ fun EditComponents(med : Med){
                     PlaceTextField(modifier = Modifier, labelText = med.dose.toString())
                 }
                 Column {
-                    PlaceTextField(modifier = Modifier, labelText = med.doseUnit)
+                    newMed_doseUnit = PlaceTextField(modifier = Modifier, labelText = med.doseUnit)
                 }
             }
 
@@ -211,7 +212,7 @@ fun EditComponents(med : Med){
                     )
                 }
                 Column {
-                    PlaceTextField(modifier = Modifier, labelText = med.notes)
+                    newMed_notes = PlaceTextField(modifier = Modifier, labelText = med.notes)
                 }
             }
 
@@ -225,23 +226,27 @@ fun EditComponents(med : Med){
                 Column (
                     modifier = Modifier.padding(end = 16.dp)
                 ){
-                    OutlinedButton(onClick = {  }, colors = ButtonDefaults.buttonColors(containerColor = White, contentColor = LightBrown)) {
+                    OutlinedButton(onClick = {
+                        navController.navigate("medsScreen")
+                    }, colors = ButtonDefaults.buttonColors(containerColor = White, contentColor = LightBrown)) {
                         Text("Отменить", color = LightBrown)
                     }
                 }
                 Column {
                     OutlinedButton(onClick = {
                         newMed = Med(
-                            name = "Аскорбинка",
-                            type = "порошок",
+                            name = newMed_name, // почему-то превращается в пустую строку
+                            type = newMed_type,
                             dailyIntake = 1,
                             duration = 14,
                             dose = 0.5,
-                            doseUnit = "пачка",
+                            doseUnit = newMed_doseUnit,
                             intakeTiming = 1,
-                            notes = "растворять в воде"
+                            notes = newMed_notes
                         );
-                        medEditScreenViewModel.addMed(newMed)
+                        //med.name = newMed_name
+                        medEditScreenViewModel.changeMed(med, newMed);
+                        medEditScreenViewModel.fetchMed()
                                              },
                         colors = ButtonDefaults.buttonColors(containerColor = LightBrown, contentColor = LightBrown)) {
                         Text("Сохранить", color = LightBeige)
@@ -255,7 +260,7 @@ fun EditComponents(med : Med){
 }
 
 @Composable
-fun PlaceTextField(modifier: Modifier, labelText: String){
+fun PlaceTextField(modifier: Modifier, labelText: String): String {
     var text by remember { mutableStateOf("") }
 
     OutlinedTextField(
@@ -271,6 +276,7 @@ fun PlaceTextField(modifier: Modifier, labelText: String){
             .background(color = LightBeige),
         singleLine = true
     )
+    return text
 }
 
 @Composable
